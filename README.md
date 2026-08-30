@@ -9,7 +9,7 @@
 
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/itiquette/gommitlint-action/badge?style=for-the-badge)](https://scorecard.dev/viewer/?uri=github.com/itiquette/gommitlint-action)
 
-GitHub Action to validate git commit messages using [gommitlint](https://codeberg.org/itiquette/gommitlint).
+GitHub Actions (and Forgejo Actions) workflow to validate git commit messages using [gommitlint](https://codeberg.org/itiquette/gommitlint).
 
 </div>
 
@@ -22,7 +22,7 @@ GitHub Action to validate git commit messages using [gommitlint](https://codeber
 
 - run: git fetch origin main:main  # Fetch main branch ref (not available in PR context)
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     base-branch: main
 ```
@@ -32,7 +32,7 @@ GitHub Action to validate git commit messages using [gommitlint](https://codeber
 | Input | Description | Required | Default |
 |-------|-------------|----------|---------|
 | `config` | Path to gommitlint configuration file | No | - |
-| `base-branch` | Base branch to compare against (e.g., `main`) | No | - |
+| `base-branch` | Base branch to compare against (comma-separated for fallback, e.g., `main,master,develop`) | No | - |
 | `range` | Commit range to validate (e.g., `HEAD~5..HEAD`, `main..HEAD`) | No | - |
 | `count` | Validate last N commits from HEAD | No | - |
 | `rules` | Only validate specific rules (comma-separated) | No | - |
@@ -41,6 +41,7 @@ GitHub Action to validate git commit messages using [gommitlint](https://codeber
 | `verbose` | Increase output verbosity for debugging | No | `false` |
 | `log-level` | Log level: `error`, `warn`, `info`, `debug`, `trace` | No | - |
 | `skip-verification` | Skip binary checksum verification (not recommended) | No | `false` |
+| `no-ci-detect` | Disable automatic CI environment detection | No | `false` |
 
 > **Note**: Use either `base-branch`, `range`, OR `count` - not multiple.
 
@@ -63,7 +64,7 @@ jobs:
         with:
           fetch-depth: 0  # Full history needed for commit comparison
 
-      - uses: itiquette/gommitlint-action@v0.9.4
+      - uses: itiquette/gommitlint-action@v0.9.10
         with:
           range: ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
 ```
@@ -75,7 +76,7 @@ jobs:
   with:
     fetch-depth: 0  # Full history needed for commit comparison
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     count: 5
 ```
@@ -87,7 +88,7 @@ jobs:
   with:
     fetch-depth: 0  # Full history needed for commit comparison
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     range: HEAD~5..HEAD
 ```
@@ -101,7 +102,7 @@ jobs:
 
 - run: git fetch origin main:main  # Fetch main branch ref (not available in PR context)
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     base-branch: main
     rules: conventional
@@ -116,7 +117,7 @@ jobs:
 
 - run: git fetch origin main:main  # Fetch main branch ref (not available in PR context)
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     base-branch: main
     exclude-rules: cryptosignature,signoff
@@ -131,7 +132,7 @@ jobs:
 
 - run: git fetch origin main:main  # Fetch main branch ref (not available in PR context)
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     base-branch: main
     exclude-rules: linearhistory
@@ -146,7 +147,7 @@ jobs:
 
 - run: git fetch origin main:main  # Fetch main branch ref (not available in PR context)
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     config: .gommitlint.yaml
     base-branch: main
@@ -169,7 +170,7 @@ This occurs when git can't find a referenced commit or branch. For `base-branch:
 
 - run: git fetch origin main:main  # Fetch main branch ref (not available in PR context)
 
-- uses: itiquette/gommitlint-action@v0.9.4
+- uses: itiquette/gommitlint-action@v0.9.10
   with:
     base-branch: main
 ```
@@ -199,8 +200,8 @@ permissions:
 ## Related Projects
 
 - [gommitlint](https://codeberg.org/itiquette/gommitlint) - The commit message linter itself
-- [gommitlint-action (Forgejo)](https://codeberg.org/itiquette/gommitlint-action) - A Forgejo Actions version of this
+- [gommitlint-action on Codeberg/Forgejo](https://codeberg.org/itiquette/gommitlint-action) - Forgejo Actions port, upstream on libre-hosted infrastructure
 
 ## License
 
-EUPL-1.2
+EUPL-1.2 — a copyleft free software license, GPL-compatible via its compatibility clause.
